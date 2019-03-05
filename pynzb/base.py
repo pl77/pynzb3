@@ -21,12 +21,13 @@ class NZBSegment(object):
 
 
 class NZBFile(object):
-    def __init__(self, poster, date, subject, groups=None, segments=None):
+    def __init__(self, poster, date, subject, metadata=None, groups=None, segments=None):
         self.poster = poster
         self.date = parse_date(date)
         self.subject = subject
         self.groups = groups or []
         self.segments = segments or []
+        self.metadata = metadata or dict()
 
     def add_group(self, group):
         self.groups.append(group)
@@ -41,22 +42,28 @@ class BaseNZBParser(object):
 
 
 class BaseETreeNZBParser(BaseNZBParser):
+    def __init__(self, metadata=None):
+        self.metadata = metadata or dict()
+
     def get_etree_iter(self, xml, et=None):
         raise NotImplementedError
 
     def parse(self, xml):
         context = self.get_etree_iter(xml)
-        files, current_file, current_segment = [], None, None
-
+        files, current_file, current_segment, post_info = [], None, None, None
         for event, elem in context:
             if event == "start":
                 # If it's an NZBFile, create an object so that we can add the
                 # appropriate stuff to it.
-                if elem.tag == "{http://www.newzbin.com/DTD/2003/nzb}file":
+                if elem.tag == "{http://www.newzbin.com/DTD/2003/nzb}meta":
+                    self.metadata[elem.attrib['type']] = elem.text
+
+                elif elem.tag == "{http://www.newzbin.com/DTD/2003/nzb}file":
                     current_file = NZBFile(
                         poster=elem.attrib['poster'],
                         date=elem.attrib['date'],
-                        subject=elem.attrib['subject']
+                        subject=elem.attrib['subject'],
+                        metadata=self.metadata
                     )
 
             elif event == "end":
