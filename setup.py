@@ -13,9 +13,8 @@ parsers into one simple interface.
 
 This package includes three implementations: one based on expat, another based
 on ElementTree, and a final implementation based on lxml.  The order in which
-they were listed is in order of compatibility.  The expat version should work on
-all versions of Python > 2.0, the lxml one will work on all versions > 2.5, and
-lxml will only work if you have lxml installed.
+they were listed is in order of compatibility.  The lxml version will work on all versions > 3.4, 
+and lxml will only work if you have lxml installed.
 
 
 A Note on Installing lxml
@@ -141,7 +140,7 @@ some information about each file and its segments::
 """
 
 setup(
-    name='pynzb',
+    name='pynzb3',
     version=version,
     description="pynzb is a unified API for parsing NZB files, with several concrete implementations included",
     long_description=LONG_DESCRIPTION,
@@ -152,7 +151,7 @@ setup(
     keywords='nzb,parser,xml',
     author='Eric Florenzano',
     author_email='floguy@gmail.com',
-    url='http://github.com/ericflo/pynzb/tree/master',
+    url='http://github.com/pl77/pynzb3/tree/master',
     license='BSD',
     packages=find_packages(),
     include_package_data=True,
