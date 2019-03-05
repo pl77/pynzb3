@@ -4,7 +4,10 @@ import time
 
 def parse_date(date):
     if isinstance(date, str):
-        date = int(date)
+        try:
+            date = int(date)
+        except ValueError:
+            date = 0
     gmtime = time.gmtime(date)
     return datetime.date(gmtime.tm_year, gmtime.tm_mon, gmtime.tm_mday)
 
