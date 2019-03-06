@@ -7,9 +7,13 @@ def parse_date(date):
         try:
             date = int(date)
         except ValueError:
-            date = 0
+            date = 1
     gmtime = time.gmtime(date)
-    return datetime.date(gmtime.tm_year, gmtime.tm_mon, gmtime.tm_mday)
+    try:
+        return datetime.date(gmtime.tm_year, gmtime.tm_mon, gmtime.tm_mday)
+    except ValueError:
+        print("gmtime Error for date:", date, "and gmtime:", gmtime, "returning epoch date")
+        return datetime.date(1970, 1, 1)
 
 
 class NZBSegment(object):
